@@ -1,2 +1,6 @@
 # DS6372-Project2
-DS 6372 Project 2
+John Rodgers
+Michael Tieu
+David Nguyen
+
+https://www.kaggle.com/fayomi/advertising
