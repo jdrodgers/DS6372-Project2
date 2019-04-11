@@ -1,4 +1,4 @@
-Daily Time Spent on Site,Age,Area Income,Daily Internet Usage,Ad Topic Line,City,Male,Country,Timestamp,Month,MonthName,Day,Year,Hour,Minute,AM-PM,6 Hour Groups,6 Hour Group - Alternate 1,4 Hour Groups,4 Hour Group - Alternate 1,8 Hour Group,8 Hour Group - Alternate 1,Clicked on Ad
+DailyTimeSpentOnSite,Age,AreaIncome,DailyInternetUsage,AdTopicLine,City,Male,Country,Timestamp,Month,MonthName,Day,Year,Hour,Minute,AMPM,SixHourGroup,SixHourGroupAlternative,FourHourGroup,FourHourGroupAlternative,EightHourGroup,EightHourGroupAlternative,ClickedOnAd
 68.95,35,61833.9,256.09,Cloned 5thgeneration orchestration,Wrightburgh,0,Tunisia,3/27/2016 0:53,3,March,27,2016,0,53,AM,0000-0559,2300-0259,0000-0359,2000-2359,0000-0759,2000-0359,0
 80.23,31,68441.85,193.77,Monitored national standardization,West Jodi,1,Nauru,4/4/2016 1:39,4,April,4,2016,1,39,AM,0000-0559,2300-0259,0000-0359,2000-2359,0000-0759,2000-0359,0
 69.47,26,59785.94,236.5,Organic bottom-line service-desk,Davidton,0,San Marino,3/13/2016 20:35,3,March,13,2016,20,35,PM,1800-2359,1500-2059,2000-2359,1800-2159,1600-2359,2000-0359,0
