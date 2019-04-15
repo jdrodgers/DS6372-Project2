@@ -1,0 +1,30 @@
+---
+title: "P2"
+author: "Michael Tieu"
+date: "4/14/2019"
+output: html_document
+---
+
+```{r}
+library(class)
+
+ads <- read.csv("advertising2.csv", stringsAsFactors = FALSE)
+na.omit(ads)
+
+AdSize <- as.numeric(length(ads$DailyTimeSpentOnSite))
+
+Split = .8
+Indices = sample(seq(1,AdSize,length = AdSize), Split*AdSize)
+Test_Data <- ads[Indices,]
+Val_Data <- ads[-Indices,]
+Test_Val <- Test_Data$ClickedOnAd
+True_Val <- Val_Data$ClickedOnAd
+
+Test_Vars <- data.frame(subset(Test_Data, select = c("Male", "Month", "Day", "Hour", "Minute")))
+
+Val_Vars <- data.frame(subset(Val_Data, select = c("Male", "Month", "Day", "Hour", "Minute")))
+
+predictions <- knn(Test_Vars, Val_Vars, Test_Val)
+
+cf <- confusionMatrix(table(predictions, True_Val))
+```
