@@ -63,22 +63,22 @@ run;
 
 
 /* T-Test between DailyTimeSpentOnSite, Age, DailyInternetUsage, AreaIncome */
-proc ttest data = Train sides=2 h0=0 plots(showh0);
+proc ttest data = WORK.advertising sides=2 h0=0 plots(showh0);
 	class ClickedOnAd;
 	var DailyTimeSpentOnSite;
 run;
 
-proc ttest data = Train sides=2 h0=0 plots(showh0);
+proc ttest data = WORK.advertising sides=2 h0=0 plots(showh0);
 	class ClickedOnAd;
 	var Age;
 run;
 
-proc ttest data = Train sides=2 h0=0 plots(showh0);
+proc ttest data = WORK.advertising sides=2 h0=0 plots(showh0);
 	class ClickedOnAd;
 	var DailyInternetUsage;
 run;
 
-proc ttest data = Train sides=2 h0=0 plots(showh0);
+proc ttest data = WORK.advertising sides=2 h0=0 plots(showh0);
 	class ClickedOnAd;
 	var AreaIncome;
 run;
