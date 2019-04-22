@@ -14,7 +14,7 @@ RUN;
 proc print data=advertising2; run;
 
 
-proc surveyselect data=advertising2 out=testsplit method=srs samprate=0.60
+proc surveyselect data=advertising2 out=testsplit method=srs samprate=0.80
          outall seed=12345 noprint;
   samplingunit id;
 run;
@@ -28,12 +28,12 @@ data test;
 run;
 
 proc corr data=advertising2;
-var Age AreaIncome DailyTimeSpentOnSite;
+var Age AreaIncome DailyTimeSpentOnSite aboveAvgTime;
 run;
 
 proc discrim data = train
          pool = test crossvalidate canonical ncan=2 testdata=test testout = a list testlist;
 class aboveAvgTime;
-var Age AreaIncome DailyTimeSpentOnSite aboveAvgTime;
+var Age AreaIncome DailyTimeSpentOnSite;
 run;
 
