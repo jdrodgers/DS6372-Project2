@@ -110,7 +110,7 @@ run;
 /* running k-nearest neighbors on the test set */                                                                                                                                                                                                     
 title 'kNN';
 proc discrim data = train                                                                                                                                                                                                                             
-         method=npar k=5 /* apply k-nn classification method using 5 nearest neighbors */
+         method=npar k=4 /* apply k-nn classification method using 5 nearest neighbors */
 	 testdata=test testout = knn;                                                                                                                                                                                                 
 class ClickedOnAd;                                                                                                                                                                                                                                    
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
