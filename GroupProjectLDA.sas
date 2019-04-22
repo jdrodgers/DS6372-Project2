@@ -51,6 +51,7 @@ proc sgscatter data = WORK.advertising;
 matrix Month Day Hour Minute / diagonal=(histogram) group=clickedonad;
 run;
 
+/* correlation matrix of dataset for included variables */
 proc corr data=advertising2;
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;
 run;
@@ -99,14 +100,20 @@ proc logistic data=Train plots(only label)=(leverage dpc roc(id=obs) effect);
 	score data = test out = Score2 fitstat;
 run;
 
+/* running QDA on the test set */                                                                                                                                                                                                                     
+title 'QDA';
 proc discrim data = train                                                                                                                                                                                                                             
-         pool = test crossvalidate testdata=test testout = lda;                                                                                                                                                                                       
+         pool = test crossvalidate 
+	 testdata=test testout = lda;                                                                                                                                                                                       
 class ClickedOnAd;                                                                                                                                                                                                                                    
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
 run;                                                                                                                                                                                                                                                  
-                                                                                                                                                                                                                                                      
+
+/* running k-nearest neighbors on the test set */                                                                                                                                                                                                     
+title 'kNN';
 proc discrim data = train                                                                                                                                                                                                                             
-         method=npar k=5 testdata=test testout = knn;                                                                                                                                                                                                 
+         method=npar k=5 /* apply k-nn classification method using 5 nearest neighbors */
+	 testdata=test testout = knn;                                                                                                                                                                                                 
 class ClickedOnAd;                                                                                                                                                                                                                                    
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
 run;
