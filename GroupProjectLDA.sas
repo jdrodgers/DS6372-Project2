@@ -54,6 +54,11 @@ proc corr data=advertising2;
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;
 run;
 
+/* covariance matrix */;                                                                                                                                                                                                                              
+proc calis data = advertising2 pcorr;                                                                                                                                                                                                                 
+   mstruct var= Age AreaIncome DailyTimeSpentOnSite aboveAvgTime ClickedOnAd;                                                                                                                                                                         
+run;   
+
 /* VIF */
 proc reg data = WORK.advertising plots = all;
 	model ClickedOnAd = Age AreaIncome DailyInternetUsage 
@@ -99,13 +104,14 @@ proc logistic data=Train plots(only label)=(leverage dpc roc(id=obs) effect);
 run;
 
 /* running QDA on the test set */                                                                                                                                                                                                                     
-title 'QDA';
+title 'QDA';                                                                                                                                                                                                                                          
 proc discrim data = train                                                                                                                                                                                                                             
-         pool = test crossvalidate 
-	 testdata=test testout = lda;                                                                                                                                                                                       
+         pool = test crossvalidate                                                                                                                                                                                                                    
+       testdata=test testout = lda;                                                                                                                                                                                                                   
 class ClickedOnAd;                                                                                                                                                                                                                                    
-var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
-run;                                                                                                                                                                                                                                                  
+var Age AreaIncome DailyTimeSpentOnSite  aboveAvgTime;                                                                                                                                                                                                
+run;   
+                                                                                                                                                                                                                                              
 
 /* running k-nearest neighbors on the test set */                                                                                                                                                                                                     
 title 'kNN';
