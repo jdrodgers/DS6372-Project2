@@ -5,6 +5,7 @@ PROC IMPORT OUT= WORK.advertising
      GETNAMES=YES;
      DATAROW=2;
 RUN;
+
 DATA advertising2;
 SET advertising;
     id = _N_;
@@ -19,16 +20,83 @@ proc surveyselect data=advertising2 out=testsplit method=srs samprate=0.80
   samplingunit id;
 run;
 
-data train;
+data Train;
         set testsplit(where=(Selected=1));
 run;
 
-data test;
+data Test;
         set testsplit(where=(Selected=0));
+run;
+
+/* Initial EDA */
+/*Means and distribution of data*/
+proc means data = WORK.advertising n nmiss min mean median max std;
+	var DailyTimeSpentOnSite Age AreaIncome DailyInternetUsage Male Timestamp
+		Month Day Year Hour Minute ClickedOnAd;
+run;
+
+/*Histograms and scatterplots*/
+proc univariate data = WORK.advertising noprint;
+	class ClickedOnAd;
+	histogram DailyTimeSpentOnSite Age AreaIncome DailyInternetUsage Male 
+		Timestamp Month Day Year Hour Minute;
+run;
+
+proc sgscatter data = WORK.advertising;
+matrix DailyTimeSpentOnSite Age AreaIncome DailyInternetUsage Male 
+		/ diagonal=(histogram) group=clickedonad;
+run;
+
+proc sgscatter data = WORK.advertising;
+matrix Month Day Hour Minute / diagonal=(histogram) group=clickedonad;
 run;
 
 proc corr data=advertising2;
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;
+run;
+
+/* VIF */
+proc reg data = WORK.advertising plots = all;
+	model ClickedOnAd = Age AreaIncome DailyInternetUsage 
+	DailyTimeSpentOnSite / vif;
+run;
+
+
+/* T-Test between DailyTimeSpentOnSite, Age, DailyInternetUsage, AreaIncome */
+proc ttest data = Train sides=2 h0=0 plots(showh0);
+	class ClickedOnAd;
+	var DailyTimeSpentOnSite;
+run;
+
+proc ttest data = Train sides=2 h0=0 plots(showh0);
+	class ClickedOnAd;
+	var Age;
+run;
+
+proc ttest data = Train sides=2 h0=0 plots(showh0);
+	class ClickedOnAd;
+	var DailyInternetUsage;
+run;
+
+proc ttest data = Train sides=2 h0=0 plots(showh0);
+	class ClickedOnAd;
+	var AreaIncome;
+run;
+
+/*Runs basic logistic regression*/
+proc logistic data=Train plots(only label)=(leverage dpc roc(id=obs) effect);
+	model ClickedOnAd(event='1')=  Age AreaIncome DailyInternetUsage DailyTimeSpentOnSite / 
+		link=logit technique=fisher LACKFIT CTABLE;
+	effectplot fit/obs(jitter(y=0.02));
+	score data = test out=Score1 fitstat;
+run;
+
+/*Runs logistic regression with interaction*/
+proc logistic data=Train plots(only label)=(leverage dpc roc(id=obs) effect);
+	model ClickedOnAd(event='1')=  Age AreaIncome DailyInternetUsage*DailyTimeSpentOnSite / 
+		link=logit technique=fisher LACKFIT CTABLE;
+	effectplot fit/obs(jitter(y=0.02));
+	score data = test out = Score2 fitstat;
 run;
 
 proc discrim data = train                                                                                                                                                                                                                             
@@ -41,7 +109,4 @@ proc discrim data = train
          method=npar k=5 testdata=test testout = knn;                                                                                                                                                                                                 
 class ClickedOnAd;                                                                                                                                                                                                                                    
 var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
-run;                                                                                                                                                                                                                                                  
-    
-
-
+run;
