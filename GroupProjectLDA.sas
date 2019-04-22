@@ -12,8 +12,6 @@ SET advertising;
     if DailyInternetUsage gt 180 then aboveAvgTime = 1;
          else aboveAvgTime = 0;
 RUN;
-proc print data=advertising2; run;
-
 
 proc surveyselect data=advertising2 out=testsplit method=srs samprate=0.80
          outall seed=12345 noprint;
