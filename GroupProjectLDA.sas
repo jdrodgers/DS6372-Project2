@@ -28,12 +28,20 @@ data test;
 run;
 
 proc corr data=advertising2;
-var Age AreaIncome DailyTimeSpentOnSite aboveAvgTime;
+var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;
 run;
 
-proc discrim data = train
-         pool = test crossvalidate canonical ncan=2 testdata=test testout = a list testlist;
-class aboveAvgTime;
-var Age AreaIncome DailyTimeSpentOnSite;
-run;
+proc discrim data = train                                                                                                                                                                                                                             
+         pool = test crossvalidate testdata=test testout = lda;                                                                                                                                                                                       
+class ClickedOnAd;                                                                                                                                                                                                                                    
+var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
+run;                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                      
+proc discrim data = train                                                                                                                                                                                                                             
+         method=npar k=5 testdata=test testout = knn;                                                                                                                                                                                                 
+class ClickedOnAd;                                                                                                                                                                                                                                    
+var Age AreaIncome DailyTimeSpentOnSite DailyInternetUsage;                                                                                                                                                                                           
+run;                                                                                                                                                                                                                                                  
+    
+
 
